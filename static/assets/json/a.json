@@ -289,13 +289,21 @@
     "image": "/assets/media/icons/youtube.webp",
     "categories": ["all", "social", "stream"],
     "dy": "true",
-    "partial": "true"
+    "partial": "true",
+    "say": "YouTube requires sign-in for video playback through proxies. Use Invidious or Piped as free YouTube alternatives instead."
   },
   {
     "name": "YouTube Alternative (Invidious)",
     "link": "https://vid.puffyan.us/",
     "image": "/assets/media/icons/youtube.webp",
     "categories": ["all", "social", "stream"]
+  },
+  {
+    "name": "YouTube Alternative (Piped)",
+    "link": "https://piped.video/",
+    "image": "/assets/media/icons/youtube.webp",
+    "categories": ["all", "social", "stream"],
+    "say": "Piped is a privacy-focused YouTube frontend. Search and watch videos without login or tracking."
   },
   {
     "name": "Whatsapp",

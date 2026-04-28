@@ -42,15 +42,21 @@ function processUrl(value, path) {
     url = `https://${url}`;
   }
 
-  sessionStorage.setItem("GoUrl", __uv$config.encodeUrl(url));
-  const dy = localStorage.getItem("dy");
+  try {
+    sessionStorage.setItem("GoUrl", __uv$config.encodeUrl(url));
+    const dy = localStorage.getItem("dy");
 
-  if (dy === "true") {
-    window.location.href = `/a/q/${__uv$config.encodeUrl(url)}`;
-  } else if (path) {
-    location.href = path;
-  } else {
-    window.location.href = `/a/${__uv$config.encodeUrl(url)}`;
+    if (dy === "true") {
+      window.location.href = `/a/q/${__uv$config.encodeUrl(url)}`;
+    } else if (path) {
+      location.href = path;
+    } else {
+      window.location.href = `/a/${__uv$config.encodeUrl(url)}`;
+    }
+  } catch (error) {
+    console.error("Error processing URL:", error);
+    // Fallback to basic navigation
+    window.location.href = `/a/${encodeURIComponent(url)}`;
   }
 }
 

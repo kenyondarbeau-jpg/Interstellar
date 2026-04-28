@@ -90,8 +90,29 @@ app.use(express.urlencoded({ extended: true }));
   setupMasqr(app);
 } */
 
-app.use(express.static(path.join(__dirname, "static")));
-app.use("/ca", cors({ origin: true }));
+app.use(express.static(path.join(__dirname, "static"), {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.html')) {
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    }
+  }
+}));
+
+// Enable credentials for OAuth authentication (YouTube, Google Sign-in)
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Origin', req.get('origin') || '*');
+  res.header('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  res.header('Cross-Origin-Embedder-Policy', 'require-corp');
+  next();
+});
+
+app.use("/ca", cors({ 
+  origin: true, 
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+}));
 
 const routes = [
   { path: "/b", file: "apps.html" },
@@ -105,16 +126,19 @@ const routes = [
 // biome-ignore lint: idk
 routes.forEach(route => {
   app.get(route.path, (_req, res) => {
+    res.type("text/html");
     res.sendFile(path.join(__dirname, "static", route.file));
   });
 });
 
 app.use((req, res, next) => {
+  res.type("text/html");
   res.status(404).sendFile(path.join(__dirname, "static", "404.html"));
 });
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
+  res.type("text/html");
   res.status(500).sendFile(path.join(__dirname, "static", "404.html"));
 });
 
