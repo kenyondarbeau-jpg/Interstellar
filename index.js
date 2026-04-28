@@ -131,6 +131,18 @@ routes.forEach(route => {
   });
 });
 
+// Handle dynamic routes for /a/* paths (e.g., /a/q/{encodedUrl})
+app.get("/a/*", (_req, res) => {
+  res.type("text/html");
+  res.sendFile(path.join(__dirname, "static", "games.html"));
+});
+
+// Handle dynamic routes for /b/* paths
+app.get("/b/*", (_req, res) => {
+  res.type("text/html");
+  res.sendFile(path.join(__dirname, "static", "apps.html"));
+});
+
 app.use((req, res, next) => {
   res.type("text/html");
   res.status(404).sendFile(path.join(__dirname, "static", "404.html"));
